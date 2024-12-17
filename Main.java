@@ -15,10 +15,23 @@ public class Main {
             System.out.println("4. Calculate Overall Grade");
             System.out.println("5. Exit");
 
-            System.out.print("Choose an option: ");
-            int choice = sc.nextInt();
-            sc.nextLine(); // Consume newline
+            int choice = 0; // Variable to hold the user's choice
+            boolean validInput = false; // Flag to check input validity
 
+            // Loop until valid input is entered
+            while (!validInput) {
+                System.out.print("Choose an option: ");
+                if (sc.hasNextInt()) {
+                    choice = sc.nextInt();
+                    sc.nextLine(); // Consume the newline
+                    validInput = true; // Input is valid, exit the loop
+                } else {
+                    System.out.println("Invalid input. Please enter a valid number between 1 and 5.");
+                    sc.nextLine(); // Consume the invalid input
+                }
+            }
+
+            // Process the user's choice
             switch (choice) {
                 case 1:
                     addCourse();
