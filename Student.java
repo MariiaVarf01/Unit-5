@@ -1,60 +1,61 @@
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Student {
     private String name;
     private int id;
-    private Map<Course, Integer> enrolledCourses; // Stores Course objects and grades
+    private List<Course> enrolledCourses;
+    private List<Integer> grades;
 
-    // Constructor
     public Student(String name, int id) {
         this.name = name;
         this.id = id;
-        this.enrolledCourses = new HashMap<>();
-    }
-
-    // Getters and Setters
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        this.enrolledCourses = new ArrayList<>();
+        this.grades = new ArrayList<>();
     }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public String getName() {
+        return name;
     }
 
-    public Map<Course, Integer> getEnrolledCourses() {
+    public List<Course> getEnrolledCourses() {
         return enrolledCourses;
     }
 
-    // Method to enroll in a course
-    public void enrollCourse(Course course) {
-        if (enrolledCourses.containsKey(course)) {
-            System.out.println("Already enrolled in this course.");
-            return;
-        }
-        if (course.addStudent()) { // Add student if capacity allows
-            enrolledCourses.put(course, null); // Null grade initially
-            System.out.println("Enrolled in course: " + course.getCourseName());
-        } else {
-            System.out.println("Course capacity reached. Cannot enroll.");
+    public List<Integer> getGrades() {
+        return grades;
+    }
+
+    // Method to assign a grade to a student
+    public void assignGrade(Course course, int grade) {
+        int index = enrolledCourses.indexOf(course);
+        if (index != -1) {
+            grades.set(index, grade);
         }
     }
 
-    // Method to assign a grade for a course
-    public void assignGrade(Course course, int grade) {
-        if (enrolledCourses.containsKey(course)) {
-            enrolledCourses.put(course, grade);
-            System.out.println("Grade assigned: " + grade + " for course " + course.getCourseName());
+    // Method to print student info
+    public void printStudentInfo() {
+        System.out.println("Student Name: " + name);
+        System.out.println("Student ID: " + id);
+        System.out.println("Enrolled Courses:");
+        for (int i = 0; i < enrolledCourses.size(); i++) {
+            Course course = enrolledCourses.get(i);
+            Integer grade = grades.get(i);
+            System.out.println(course.getCourseCode() + " - " + course.getCourseName() + " | Grade: " + (grade == null ? "Not Assigned" : grade));
+        }
+    }
+    // Method to enroll a student in a course
+    public void enrollCourse(Course course) {
+        if (!enrolledCourses.contains(course)) {  // Check if the course is not already enrolled
+            enrolledCourses.add(course);
+            grades.add(null); // Initially, no grade assigned
         } else {
-            System.out.println("Student is not enrolled in this course.");
+            System.out.println("Student is already enrolled in the course: " + course.getCourseName());
         }
     }
 }
