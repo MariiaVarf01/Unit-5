@@ -2,19 +2,14 @@ public class Course {
     private String courseCode;
     private String courseName;
     private int maxCapacity;
-    private int currentEnrollment;
+    private static int totalEnrolledStudents = 0;  // Static variable to keep track of total enrolled students
 
-    private static int totalEnrolledStudents = 0; // Static variable
-
-    // Constructor
     public Course(String courseCode, String courseName, int maxCapacity) {
         this.courseCode = courseCode;
         this.courseName = courseName;
         this.maxCapacity = maxCapacity;
-        this.currentEnrollment = 0;
     }
 
-    // Getters
     public String getCourseCode() {
         return courseCode;
     }
@@ -27,22 +22,29 @@ public class Course {
         return maxCapacity;
     }
 
-    public int getCurrentEnrollment() {
-        return currentEnrollment;
+    // Method to check if the course has space for more students
+    public boolean hasCapacity() {
+        return totalEnrolledStudents < maxCapacity;
     }
 
-    // Static method to retrieve total enrolled students
+    // Static method to get total enrolled students across all courses
     public static int getTotalEnrolledStudents() {
         return totalEnrolledStudents;
     }
 
-    // Method to add a student if capacity allows
-    public boolean addStudent() {
-        if (currentEnrollment < maxCapacity) {
-            currentEnrollment++;
-            totalEnrolledStudents++;
-            return true;
-        }
-        return false;
+    // Method to increase total enrolled students (should be called when a student enrolls)
+    public static void incrementEnrolledStudents() {
+        totalEnrolledStudents++;
+    }
+
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Course course = (Course) obj;
+        return courseCode.equals(course.courseCode);
+    }
+
+    public int hashCode() {
+        return courseCode.hashCode();
     }
 }
